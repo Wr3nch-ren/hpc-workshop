@@ -2,7 +2,7 @@
 set -e
 
 # Replace with the IP address of your pNFS server
-PNFS_SERVER_IP="192.168.x.x"
+PNFS_SERVER_IP="10.100.x.xxx"
 
 echo "📦 Installing NFS client tools..."
 sudo apt update

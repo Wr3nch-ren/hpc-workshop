@@ -78,9 +78,9 @@ ff02::2 ip6-allrouters
 ff02::3 ip6-allhosts
 
 # My HPC Training
-10.100.0.xxx vm-01
-10.100.0.xxx vm-02
-10.100.0.xxx vm-03
+10.100.x.xxx vm-01
+10.100.x.xxx vm-02
+10.100.x.xxx vm-03
 
 ```
 
@@ -89,6 +89,53 @@ ff02::3 ip6-allhosts
 > หมายเลข VM และ IP Address ของ VM ที่ได้รับมอบหมายให้กับผู้เข้าอบรม สามารถดูได้จากเอกสารการอบรม
 
 2.4 ให้ทำการตั้งค่าเช่นนี้กับ VM อื่นๆ โดยเปลี่ยนหมายเลข VM และ IP Address ให้ตรงกับที่ได้รับมอบหมาย
+
+2.A กรณีตั้งค่า static IP Address
+ให้ทำการ comment ทุกบรรทัดในไฟล์ /etc/netplan/50-cloud-init.yaml
+
+```bash
+sudo nano /etc/netplan/50-cloud-init.yaml
+```
+
+หลังจากนั้นให้ใช้คำสั่งด้านล่างเพื่อปิดการใช้งานการตั้งค่า network ของ cloud-init
+
+```bash
+echo "network: {config: disabled}" | sudo tee /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg
+```
+
+ทำการสร้างไฟล์ใหม่สำหรับการตั้งค่า static IP Address โดยใช้คำสั่งดังนี้
+
+```bash
+sudo nano /etc/netplan/10-static.yaml
+```
+
+จากนั้นให้เพิ่มการตั้งค่าดังนี้
+
+```yaml
+# Use networkd renderer - configure link-local for Ethernet + static IP
+network:
+  version: 2
+  renderer: networkd
+
+  ethernets:
+    ens18:
+      dhcp4: no
+      addresses: [10.100.2.1/22]
+      routes:
+        - to: default
+          via: 10.100.0.1
+      nameservers:
+        addresses: [1.1.1.1, 8.8.8.8]
+        search: [hpc.in.th]
+```
+
+จากนั้นกด `Ctrl + O` เพื่อบันทึกไฟล์ และ `Ctrl + X` เพื่อออกจาก nano editor
+
+หลังจากนั้นให้ใช้คำสั่งด้านล่างเพื่อทำการตั้งค่า network ใหม่
+
+```bash
+sudo netplan apply
+```
 
 ## Step 3: ทดสอบการเชื่อมต่อ
 
