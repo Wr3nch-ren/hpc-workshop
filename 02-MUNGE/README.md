@@ -8,7 +8,7 @@ MUNGE (MUNGE Uid 'N' Gid Emporium) เป็นระบบที่ใช้ใ
 
 ### สร้าง Global User และ Group
 
-สำหรับ munge
+**สำหรับ munge**
 
 ```bash
 export MUNGEUSER=9901
@@ -17,7 +17,7 @@ sudo useradd -m -c "MUNGE" -d /var/lib/munge -u $MUNGEUSER -g munge -s /sbin/nol
 
 ```
 
-สำหรับ slurm
+**สำหรับ slurm**
 
 ```bash
 export SLURMUSER=9902
@@ -27,28 +27,30 @@ sudo useradd -m -c "SLURM" -d /var/lib/slurm -u $SLURMUSER -g slurm -s /sbin/nol
 
 ติดตั้ง MUNGE ทุกๆ Node ใน Cluster
 
-### 1. ติดตั้ง Dependencies
+### Step 1. ติดตั้ง Dependencies
 
 ```bash
 
 sudo apt update
-sudo apt install build-essential libssl-dev ntp libibverbs-dev libnuma-dev bzip2 zlib1g-dev
+sudo apt install build-essential libssl-dev ntp libibverbs-dev libnuma-dev bzip2 zlib1g-dev -y
 ```
 
-### 2. ดาวน์โหลด MUNGE
+### Step 2. ดาวน์โหลด MUNGE
 
 ```bash
 wget https://github.com/dun/munge/releases/download/munge-0.5.16/munge-0.5.16.tar.xz
 ```
 
-### 3. แตกไฟล์
+> หมายเหตุ: ใน VM ของผู้เข้าอบรมได้มีการดาวน์โหลดเตรียมไว้แล้ว สามารถข้ามขั้นตอนนี้ได้เลย
+
+### Step 3. แตกไฟล์
 
 ```bash
 tar -xvf munge-0.5.16.tar.xz
 cd munge-0.5.16
 ```
 
-### 4. configure, make, install
+### Step 4. configure, make, install
 
 ```bash
 ./configure \
@@ -59,4 +61,17 @@ cd munge-0.5.16
 make
 make check
 sudo make install
+```
+
+### Step 5. สร้าง Key สำหรับ MUNGE
+
+ที่เครื่องที่เป็น Frontend Node (vm-01) ให้ทำการสร้าง Key สำหรับ MUNGE โดยใช้คำสั่งดังนี้:
+
+> หมายเหตุ: คำสั่งนี้จะสร้างไฟล์ `munge.key` ที่ใช้ในการเข้ารหัสและถอดรหัสข้อมูลระหว่าง Nodes ใน Cluster
+> และทำแค่ที่เครื่อง Frontend Node ครั้งเดียวเท่านั้น
+
+```bash
+sudo chown munge:munge /etc/munge
+sudo chown munge:munge /var/log/munge
+sudo -u munge /sbin/mungekey --verbose
 ```

@@ -14,10 +14,34 @@ NFSv4.2 มีการปรับปรุงในด้านความป
 - Sparse files ซึ่งช่วยให้การจัดเก็บข้อมูลมีประสิทธิภาพมากขึ้น
 - Data deduplication ซึ่งช่วยให้การจัดเก็บข้อมูลมีประสิทธิภาพมากขึ้น
 
-## เริ่มต้นการติดตั้ง NFS
+## เริ่มต้นการติดตั้ง NFS Server และ Client
 
-ในส่วนของเครื่องที่ทำหน้าที่เป็น Frontend หรือ Head node เราจะทำการติดตั้ง NFS Server
-โดยใช้สคริป setup-pnfs-server.sh
+### Step 1. ติดตั้ง NFS Server และ Client
 
-และในส่วนของเครื่องที่เป็น compute node เราจะทำการติดตั้ง NFS Client
-โดยใช้สคริปต์ setup-pnfs-client.sh
+**ที่ vm-01**
+จะทำหน้าที่เป็นเครื่องที่ทำหน้าที่เป็น Frontend หรือ Head node ของระบบ NFS เราจะทำการติดตั้ง NFS Server
+โดยใช้สคริปต์ `setup-pnfs-server.sh`
+
+**ที่ vm-02 และ vm-03**
+จะทำหน้าที่เป็นเครื่อง Compute Node เราจะทำการติดตั้ง NFS Client
+โดยใช้สคริปต์ `setup-pnfs-client.sh`
+
+### Step 2. ทดสอบสร้างไฟล์และการเข้าถึงไฟล์
+
+**ที่ vm-01**
+
+```bash
+cd /data/pnfs
+ls -la
+touch testfile.txt
+echo "This is a test file for NFS." > testfile.txt
+ls -la
+```
+
+**ที่ vm-02 และ vm-03**
+
+```bash
+cd /mnt/pnfs
+ls -la
+cat /data/pnfs/testfile.txt
+```
