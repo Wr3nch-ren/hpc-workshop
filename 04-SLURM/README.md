@@ -22,7 +22,7 @@ sudo mv slurm-24.11.5.tar.bz2 /opt
 
 ```bash
 cd /opt
-sudo tar -xvjf slurm-24.11.1.tar.bz2
+sudo tar -xvjf slurm-24.11.5.tar.bz2
 ```
 
 ### Step 4. configure, make, install
