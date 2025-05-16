@@ -13,7 +13,7 @@ MUNGE (MUNGE Uid 'N' Gid Emporium) เป็นระบบที่ใช้ใ
 ```bash
 export MUNGEUSER=9901
 sudo groupadd -g $MUNGEUSER munge
-sudo useradd -m -c "MUNGE" -d /var/lib/munge -u $MUNGEUSER -g munge -s /sbin/nologin munge --system munge --no-create-home
+sudo useradd -c "MUNGE" -d /var/lib/munge -u $MUNGEUSER -g munge -s /sbin/nologin munge --system
 
 ```
 
@@ -22,7 +22,7 @@ sudo useradd -m -c "MUNGE" -d /var/lib/munge -u $MUNGEUSER -g munge -s /sbin/nol
 ```bash
 export SLURMUSER=9902
 sudo groupadd -g $SLURMUSER slurm
-sudo useradd -m -c "SLURM" -d /var/lib/slurm -u $SLURMUSER -g slurm -s /sbin/nologin slurm --system slurm --no-create-home
+sudo useradd -c "SLURM" -d /var/lib/slurm -u $SLURMUSER -g slurm -s /sbin/nologin slurm --system
 ```
 
 ติดตั้ง MUNGE ทุกๆ Node ใน Cluster
