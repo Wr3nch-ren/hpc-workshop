@@ -1,8 +1,15 @@
 #!/bin/bash
 set -e
 
-# Replace with the IP address of your pNFS server
-PNFS_SERVER_IP="10.100.x.xxx"
+# # Replace with the IP address of your pNFS server
+# PNFS_SERVER_IP="10.100.x.xxx"
+
+if [ -z "$PNFS_SERVER_IP" ]; then
+  echo "PNFS_SERVER_IP is not set or is empty"
+  exit 1
+else
+  echo "PNFS_SERVER_IP is set to: $PNFS_SERVER_IP"
+fi
 
 echo "📦 Installing NFS client tools..."
 sudo apt update

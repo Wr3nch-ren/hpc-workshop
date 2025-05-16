@@ -22,9 +22,22 @@ NFSv4.2 มีการปรับปรุงในด้านความป
 จะทำหน้าที่เป็นเครื่องที่ทำหน้าที่เป็น Frontend หรือ Head node ของระบบ NFS เราจะทำการติดตั้ง NFS Server
 โดยใช้สคริปต์ `setup-pnfs-server.sh`
 
+ที่ vm-01 ทำการรัน script
+```bash
+bash setup-pnfs-server.sh
+```
+
 **ที่ vm-02 และ vm-03**
 จะทำหน้าที่เป็นเครื่อง Compute Node เราจะทำการติดตั้ง NFS Client
 โดยใช้สคริปต์ `setup-pnfs-client.sh`
+
+ที่ vm-02 และ vm-03 ทำการระบุ IP และรัน script
+```bash
+# แก้ไข IP ให้เป็น IP ของเครื่อง pNFS server
+export PNFS_SERVER_IP="10.100.x.xxx" 
+
+bash setup-pnfs-client.sh
+```
 
 ### Step 2. ทดสอบสร้างไฟล์และการเข้าถึงไฟล์
 
